@@ -1,0 +1,14 @@
+# PersonalFi code owners
+# Back-end code
+*.py @wdengle1
+*.sh @wdengle1
+*.service @wdengle1
+
+# Front-end code
+*.htm* @hhuh1 @ckim5
+*.css @hhuh1 @ckim5
+*.js @hhuh1 @ckim5
+
+# Documentation
+*.md @asriniv2
+*.tex @asriniv2
