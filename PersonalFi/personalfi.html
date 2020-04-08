@@ -22,6 +22,19 @@
     }
   </script>
     <style>
+    .button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 15px 25px;
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .button:hover {
+          background-color: green;
+          }
     .tab {
       overflow: hidden;
       border: 1px solid #ccc;
@@ -55,6 +68,7 @@
   </style>
   </head>
   <body>
+    <h1> Personal Finance Game </h1>
   <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'Transactions (Shopping)')">Transactions (Shopping)</button>
     <button class="tablinks" onclick="openTab(event, 'Property')">Property</button>
@@ -64,21 +78,23 @@
 
   <!-- Tab content -->
   <div id="Transactions" class="tabcontent">
-    <h3>Taxes</h3>
-    <p>Taxes:</p>
+      <button class="button"> Different Items for purchase</button>
+        <button class="button"> Tax Estimator</button>
+
   </div>
 
   <div id="Property" class="tabcontent">
-    <h3>Loans/Debt</h3>
-    <p>Loans/Debt:</p>
+    <button class="button"> Different types of Property</button>
+      <button class="button"> Property Tax Estimator</button>
   </div>
 
   <div id="Investments/Savings" class="tabcontent">
-    <h3>Spending</h3>
-    <p>Spending</p>
+    <button class="button"> Move Between Accounts</button>
+      <button class="button"> Rates/Explanations of accounts</button>
   </div>
   <div id="Job" class="tabcontent">
-    <button type="button" onclick="alert('Email your boss pls')"> Change Hours<\button>
+    <button class="button"> Change Hours</button>
+      <button class="button"> Apply for/Change Job</button>
   </div>
 </body>
 </html>
