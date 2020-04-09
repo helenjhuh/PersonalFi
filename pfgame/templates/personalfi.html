@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    function openTab(evt, finance_obj) {
+      var i, tabcontent, tablinks;
+
+
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      document.getElementById(finance_obj).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+  </script>
+    <style>
+    .button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 15px 25px;
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .button:hover {
+          background-color: green;
+          }
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
+
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.4s;
+    }
+
+    .tab button:hover {
+      background-color: #ddd;
+    }
+
+    .tab button.active {
+      background-color: #ccc;
+    }
+
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-top: none;
+    }
+  </style>
+  </head>
+  <body>
+    <h1> Personal Finance Game </h1>
+  <div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'Transactions')">Transactions</button>
+    <button class="tablinks" onclick="openTab(event, 'Property')">Property</button>
+    <button class="tablinks" onclick="openTab(event, 'Investments/Savings')">Investments/Saving</button>
+    <button class="tablinks" onclick="openTab(event, 'Job')">Job</button>
+  </div>
+
+  <!-- Tab content -->
+  <div id="Transactions" class="tabcontent">
+      <button class="button"> Different Items for purchase</button>
+        <button class="button"> Tax Estimator</button>
+
+  </div>
+
+  <div id="Property" class="tabcontent">
+    <button class="button"> Different types of Property</button>
+      <button class="button"> Property Tax Estimator</button>
+  </div>
+
+  <div id="Investments/Savings" class="tabcontent">
+    <button class="button"> Move Between Accounts</button>
+      <button class="button"> Rates/Explanations of accounts</button>
+  </div>
+  <div id="Job" class="tabcontent">
+    <button class="button"> Change Hours</button>
+      <button class="button"> Apply for/Change Job</button>
+  </div>
+</body>
+</html>
