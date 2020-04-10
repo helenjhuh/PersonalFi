@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>PersonalFi</title>
+</head>
+<body>
+<h1>PersonalFi: week {{accounts.week_number}}</h1>
+{% if tip %}
+<strong>{{tip}}</strong>
+{%endif%}
+<ul>
+<li>Bank balance: ${{accounts.bank_balance}}</li>
+<li>Investments: ${{accounts.investment_balance}}</li>
+<li>Credit card balance: ${{accounts.cc_balance}}</li>
+<li>wage: ${{accounts.wage}} (paid fortnightly)</li>
+</ul>
+
+</body>
+</html>

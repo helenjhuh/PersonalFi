@@ -7,8 +7,8 @@ class GameProfile(models.Model):
     week_number = models.IntegerField(default=0, help_text="Set to 0 if new player.")
     bank_balance = models.IntegerField(default=0)
     investment_balance = models.IntegerField("Value of investments", default=0)
-    cc_balance = models.IntegerField(
-        "Credit card balance",
+    cc_current_month = models.IntegerField(
+        "Current month's credit card balance",
         default=0,
         help_text="The portion of credit card balance that does not accrue interest.",
     )
@@ -20,6 +20,10 @@ class GameProfile(models.Model):
     wage = models.IntegerField(
         default=0, help_text="Paid fortnightly, 0 if unemployed."
     )
+
+    @property
+    def cc_balance(self):
+        return self.cc_current_month + self.cc_overdue_balance
 
 
 class GameItem(models.Model):
