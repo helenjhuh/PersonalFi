@@ -2,9 +2,9 @@ import random
 
 from django.views.generic.base import View
 from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         # Perform one step in the simulation.
         accounts = request.user.accounts
