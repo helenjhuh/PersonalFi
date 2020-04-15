@@ -33,15 +33,7 @@
       .button:hover {
           background-color: green;
           }
-          .balance{
-            border: none;
- background-color: inherit;
- color: dodgerblue;
- padding: 14px 28px;
- font-size: 16px;
- cursor: pointer;
- display: inline-block;
-          }
+
 
     .tab {
       overflow: hidden;
@@ -76,10 +68,15 @@
   </style>
   </head>
   <body>
-    <h1> Personal Finance Game </h1>
+    <h1>
+<span style="color:green">Personal Finance Game</span>
+<button class='btn btn-success pull-right'>
+        Balances:
+          </button>
+     </h1>
     <h2> Balance: </h2>
   <div class="tab">
-    <button class = "balance button"> Balance</button>
+
     <button class="tablinks" onclick="openTab(event, 'Transactions')">Transactions</button>
     <button class="tablinks" onclick="openTab(event, 'Property')">Property</button>
     <button class="tablinks" onclick="openTab(event, 'Investments/Savings')">Investments/Saving</button>
