@@ -5,12 +5,10 @@
     function openTab(evt, finance_obj) {
       var i, tabcontent, tablinks;
 
-
       tabcontent = document.getElementsByClassName("tabcontent");
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
       }
-
 
       tablinks = document.getElementsByClassName("tablinks");
       for (i = 0; i < tablinks.length; i++) {
@@ -35,6 +33,18 @@
       .button:hover {
           background-color: green;
           }
+          .balance{
+            border: none;
+ background-color: inherit;
+ color: dodgerblue;
+ padding: 14px 28px;
+ font-size: 16px;
+ cursor: pointer;
+ display: inline-block;
+ top:0;
+ right:0;
+          }
+
     .tab {
       overflow: hidden;
       border: 1px solid #ccc;
@@ -71,6 +81,7 @@
     <h1> Personal Finance Game </h1>
     <h2> Balance: </h2>
   <div class="tab">
+    <button class = "balance button"> Balance</button>
     <button class="tablinks" onclick="openTab(event, 'Transactions')">Transactions</button>
     <button class="tablinks" onclick="openTab(event, 'Property')">Property</button>
     <button class="tablinks" onclick="openTab(event, 'Investments/Savings')">Investments/Saving</button>
