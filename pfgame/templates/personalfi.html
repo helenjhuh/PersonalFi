@@ -2,6 +2,7 @@
 <html>
 <head>
   <script>
+
     function openTab(evt, finance_obj) {
       var i, tabcontent, tablinks;
 
@@ -18,6 +19,22 @@
       document.getElementById(finance_obj).style.display = "block";
       evt.currentTarget.className += " active";
     }
+
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1">
+    <link rel="stylesheet"
+          href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+  </script>
+
+    <script src=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js">
+  </script> 
   </script>
     <style>
     .button {
@@ -71,10 +88,9 @@
     <h1>
 <span style="color:green">Personal Finance Game</span>
 <button class='btn btn-success pull-right'>
-        Balances:
+    Balances:
           </button>
      </h1>
-    <h2> Balance: </h2>
   <div class="tab">
 
     <button class="tablinks" onclick="openTab(event, 'Transactions')">Transactions</button>
