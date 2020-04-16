@@ -4,11 +4,21 @@ from django.views.generic.base import View
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+
 class IndexView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         # Perform one step in the simulation.
         accounts = request.user.accounts
-        tip = ""  # Text to display to the user based on certain events
+        tip = ""  # Text to display to the user based on certain events, leave a <br/> at the end of each tip when you append to the string.
+
+        # Initialize state for new users.
+        if not accounts.week_number:
+            if not accounts.wage:
+                accounts.wage = random.randint(600, 2000)
+                accounts.wage -= accounts.wage % 100  # Round to nearest hundred
+            SIGNING_BONUS = 600
+            tip += f'Welcome to PersonalFi! You\'ve started a new job, which pays ${accounts.wage} fortnightly. A signing bonus of ${SIGNING_BONUS} has been deposited into your bank (<a href="https://en.wikipedia.org/wiki/Signing_bonus">learn more</a>).<br/>'
+            accounts.bank_balance += SIGNING_BONUS
 
         accounts.week_number += 1
 
@@ -22,7 +32,7 @@ class IndexView(LoginRequiredMixin, View):
                 dividend_yield = random.randint(2, 4) / 100
                 dividend = round(accounts.investment_balance * dividend_yield)
                 accounts.bank_balance += dividend
-                tip += f"A quarterly dividend from your investments of ${dividend} has been deposited into your bank. "
+                tip += f'A quarterly dividend from your investments of ${dividend} has been deposited into your bank (<a href="https://www.investopedia.com/terms/d/dividend.asp">learn more</a>).<br/>'
 
         # roll over credit card balances and charge interest
         if accounts.week_number % 4 == 0:  # Monthly
@@ -36,7 +46,7 @@ class IndexView(LoginRequiredMixin, View):
 
         if accounts.wage and accounts.week_number % 2 == 0:  # Fortnightly
             accounts.bank_balance += accounts.wage
-            tip += f"Payday! ${accounts.wage} has been deposited into your bank. "
+            tip += f'Payday! ${accounts.wage} has been deposited into your bank. <a href="https://i.imgur.com/lSoUQr2.png">Spend it wisely!</a><br/>'
 
         accounts.save()
         context = {"accounts": accounts, "tip": tip}
