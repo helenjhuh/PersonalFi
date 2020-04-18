@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+{%block title%}Invest{%endblock%}
+{%block content%}
+  <h1>Invest</h1>
+  <p>Funds from your bank will be moved to your investment account.</p>
+
+  <form action="/invest/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Invest">
+  </form>
+{%endblock%}
