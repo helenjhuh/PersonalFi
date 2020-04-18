@@ -62,7 +62,9 @@ class InvestView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
-        if form.cleaned_data["amount"] > self.request.user.accounts.bank_balance:
+        if form.cleaned_data['amount'] < 0:
+            form.cleaned_data['amount'] = 0
+        elif form.cleaned_data["amount"] > self.request.user.accounts.bank_balance:
             form.cleaned_data["amount"] = self.request.user.accounts.bank_balance
         self.request.user.accounts.bank_balance -= form.cleaned_data["amount"]
         self.request.user.accounts.investment_balance += form.cleaned_data["amount"]
@@ -76,7 +78,9 @@ class DivestView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
-        if form.cleaned_data["amount"] > self.request.user.accounts.investment_balance:
+        if form.cleaned_data['amount'] < 0:
+            form.cleaned_data['amount'] = 0
+        elif form.cleaned_data["amount"] > self.request.user.accounts.investment_balance:
             form.cleaned_data["amount"] = self.request.user.accounts.investment_balance
         self.request.user.accounts.investment_balance -= form.cleaned_data["amount"]
         self.request.user.accounts.bank_balance += form.cleaned_data["amount"]
