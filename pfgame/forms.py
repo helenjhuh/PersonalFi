@@ -7,3 +7,7 @@ class InvestForm(forms.Form):
 
 class DivestForm(forms.Form):
     amount = forms.IntegerField()
+
+
+class CCPaymentForm(forms.Form):
+    amount = forms.IntegerField()

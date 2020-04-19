@@ -8,8 +8,8 @@
 {%endif%}
 <ul>
 <li>Bank balance: ${{accounts.bank_balance}}</li>
-<li>Investments: ${{accounts.investment_balance}} (<a href="{%url 'invest'%}">invest</a>, <a href="{%url 'divest'%}">divest</a>)</li>
-<li>Credit card balance: ${{accounts.cc_balance}}</li>
+<li>Investments: ${{accounts.investment_balance}} (<a href="{%url 'invest'%}">invest</a>{%if accounts.investment_balance%}, <a href="{%url 'divest'%}">divest</a>{%endif%})</li>
+<li>Credit card balance: ${{accounts.cc_balance}} {%if accounts.cc_balance%}(<a href="{%url 'CCPayment'%}">make payment</a>){%endif%}</li>
 <li>Wage: ${{accounts.wage}} (paid fortnightly)</li>
 </ul>
 {%endblock%}
