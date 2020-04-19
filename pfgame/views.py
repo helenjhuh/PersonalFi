@@ -1,6 +1,9 @@
 import random
 
+from pfgame.forms import InvestForm, DivestForm
+
 from django.views.generic.base import View
+from django.views.generic.edit import FormView
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -51,3 +54,35 @@ class IndexView(LoginRequiredMixin, View):
         accounts.save()
         context = {"accounts": accounts, "tip": tip}
         return render(request, "index.html", context=context)
+
+
+class InvestView(FormView):
+    template_name = "invest.html"
+    form_class = InvestForm
+    success_url = "/"
+
+    def form_valid(self, form):
+        if form.cleaned_data['amount'] < 0:
+            form.cleaned_data['amount'] = 0
+        elif form.cleaned_data["amount"] > self.request.user.accounts.bank_balance:
+            form.cleaned_data["amount"] = self.request.user.accounts.bank_balance
+        self.request.user.accounts.bank_balance -= form.cleaned_data["amount"]
+        self.request.user.accounts.investment_balance += form.cleaned_data["amount"]
+        self.request.user.accounts.save()
+        return super().form_valid(form)
+
+
+class DivestView(FormView):
+    template_name = "divest.html"
+    form_class = DivestForm
+    success_url = "/"
+
+    def form_valid(self, form):
+        if form.cleaned_data['amount'] < 0:
+            form.cleaned_data['amount'] = 0
+        elif form.cleaned_data["amount"] > self.request.user.accounts.investment_balance:
+            form.cleaned_data["amount"] = self.request.user.accounts.investment_balance
+        self.request.user.accounts.investment_balance -= form.cleaned_data["amount"]
+        self.request.user.accounts.bank_balance += form.cleaned_data["amount"]
+        self.request.user.accounts.save()
+        return super().form_valid(form)

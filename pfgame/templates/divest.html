@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+{%block title%}Divest{%endblock%}
+{%block content%}
+  <h1>Divest</h1>
+  <p>Funds from your investments will be moved to your bank.</p>
+
+  <form action="/divest/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Divest">
+  </form>
+{%endblock%}
