@@ -25,11 +25,33 @@ class IndexView(LoginRequiredMixin, View):
 
         accounts.week_number += 1
 
+        # Handle negative balances.
+        if accounts.bank_balance < 0:
+            OVERDRAFT_FEE = 250
+            accounts.bank_balance -= OVERDRAFT_FEE
+            tip += f"You've overdrawn your bank account! An overdraft fee of ${OVERDRAFT_FEE} has been charged. Please deposit funds to cover the overdraft.<br/>"
+        if accounts.cc_current_month < 0:
+            accounts.bank_balance -= (
+                accounts.cc_current_month
+            )  # Minus negative equivalent to addition
+            accounts.cc_current_month = 0
+            tip += (
+                "A credit from your credit card has been deposited into your bank.<br/>"
+            )
+        if accounts.cc_overdue_balance < 0:
+            accounts.bank_balance -= (
+                accounts.cc_overdue_balance
+            )  # Minus negative equivalent to addition
+            accounts.cc_overdue_balance = 0
+            tip += (
+                "A credit from your credit card has been deposited into your bank.<br/>"
+            )
+
         # Randomly update investments.
         if accounts.investment_balance:
             investment_multiplier = random.randint(97, 103) / 100
-            accounts.investment_balance = round(
-                accounts.investment_balance * investment_multiplier
+            accounts.investment_balance = max(
+                0, round(accounts.investment_balance * investment_multiplier)
             )
             if accounts.week_number % 12 == 0:  # Quarterly
                 dividend_yield = random.randint(2, 4) / 100
@@ -62,8 +84,8 @@ class InvestView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
-        if form.cleaned_data['amount'] < 0:
-            form.cleaned_data['amount'] = 0
+        if form.cleaned_data["amount"] < 0:
+            form.cleaned_data["amount"] = 0
         elif form.cleaned_data["amount"] > self.request.user.accounts.bank_balance:
             form.cleaned_data["amount"] = self.request.user.accounts.bank_balance
         self.request.user.accounts.bank_balance -= form.cleaned_data["amount"]
@@ -78,9 +100,11 @@ class DivestView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
-        if form.cleaned_data['amount'] < 0:
-            form.cleaned_data['amount'] = 0
-        elif form.cleaned_data["amount"] > self.request.user.accounts.investment_balance:
+        if form.cleaned_data["amount"] < 0:
+            form.cleaned_data["amount"] = 0
+        elif (
+            form.cleaned_data["amount"] > self.request.user.accounts.investment_balance
+        ):
             form.cleaned_data["amount"] = self.request.user.accounts.investment_balance
         self.request.user.accounts.investment_balance -= form.cleaned_data["amount"]
         self.request.user.accounts.bank_balance += form.cleaned_data["amount"]
