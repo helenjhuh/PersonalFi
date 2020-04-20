@@ -12,4 +12,15 @@
 <li>Credit card balance: ${{accounts.cc_balance}} {%if accounts.cc_balance%}(<a href="{%url 'CCPayment'%}">make payment</a>){%endif%}</li>
 <li>Wage: ${{accounts.wage}} (paid fortnightly)</li>
 </ul>
+{%if accounts.bank_balance > 0%}
+<h2>Shop</h2>
+{%if items%}<ul>{%endif%}
+  {%for item in items%}
+  <li><a href="{%url 'buy' item.pk%}">{{item}} (${{item.price}})</a></li>
+  {%empty%}
+  No items for sale! Add items to the database via the admin site.
+  {%endfor%}
+{%if items%}</ul>{%endif%}
+{%endif%}
+<a href="{%url 'index'%}" class="btn" role="button">Do nothing this week</a>
 {%endblock%}

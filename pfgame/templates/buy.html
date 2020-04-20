@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+{%block title%}Buy {{item}}{%endblock%}
+{%block content%}
+  <h1>Buy {{item}}</h1>
+  <p>You are about to buy one {{item}} for ${{item.price}}.</p>
+
+  <form action="{%url 'buy' item.pk%}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Buy">
+  </form>
+{%endblock%}
