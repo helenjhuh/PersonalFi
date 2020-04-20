@@ -1,10 +1,11 @@
 import random
 
-from pfgame.forms import InvestForm, DivestForm, CCPaymentForm
+from pfgame.forms import InvestForm, DivestForm, CCPaymentForm, BuyForm
+from pfgame.models import GameItem
 
 from django.views.generic.base import View
 from django.views.generic.edit import FormView
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -77,11 +78,14 @@ class IndexView(LoginRequiredMixin, View):
             tip += f'Payday! ${accounts.wage} has been deposited into your bank. <a href="https://i.imgur.com/lSoUQr2.png">Spend it wisely!</a><br/>'
 
         accounts.save()
-        context = {"accounts": accounts, "tip": tip}
+        item_qs = (
+            GameItem.objects.all()
+        )  # Todo: consider filtering out items the user already owns (so they can't buy something twice).
+        context = {"accounts": accounts, "items": item_qs, "tip": tip}
         return render(request, "index.html", context=context)
 
 
-class InvestView(FormView):
+class InvestView(LoginRequiredMixin, FormView):
     template_name = "invest.html"
     form_class = InvestForm
     success_url = "/"
@@ -97,7 +101,7 @@ class InvestView(FormView):
         return super().form_valid(form)
 
 
-class DivestView(FormView):
+class DivestView(LoginRequiredMixin, FormView):
     template_name = "divest.html"
     form_class = DivestForm
     success_url = "/"
@@ -115,7 +119,7 @@ class DivestView(FormView):
         return super().form_valid(form)
 
 
-class CCPaymentView(FormView):
+class CCPaymentView(LoginRequiredMixin, FormView):
     template_name = "cc_payment.html"
     form_class = CCPaymentForm
     success_url = "/"
@@ -136,4 +140,27 @@ class CCPaymentView(FormView):
             )
             self.request.user.accounts.cc_overdue_balance = 0
         self.request.user.accounts.save()
+        return super().form_valid(form)
+
+
+class BuyView(LoginRequiredMixin, FormView):
+    template_name = "buy.html"
+    form_class = BuyForm
+    success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        item = get_object_or_404(GameItem, pk=self.kwargs["pk"])
+        context["item"] = item
+        return context
+
+    def form_valid(self, form):
+        item = get_object_or_404(GameItem, pk=self.kwargs["pk"])
+        if form.cleaned_data["payment_method"] == "cash":
+            self.request.user.accounts.bank_balance -= item.price
+        elif form.cleaned_data["payment_method"] == "cc":
+            self.request.user.accounts.cc_current_month += item.price
+        item.owned_by.add(self.request.user)
+        self.request.user.accounts.save()
+        item.save()
         return super().form_valid(form)
