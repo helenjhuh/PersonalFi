@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+{%block title%}Make credit card payment{%endblock%}
+{%block content%}
+  <h1>Make a credit card payment</h1>
+  <p>Funds from your bank will be used to pay your credit card balance. Quickly paying a credit account helps avoid interest charges.</p>
+
+  <form action="{%url 'CCPayment'%}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Make payment">
+  </form>
+{%endblock%}

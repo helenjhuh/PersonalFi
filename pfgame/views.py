@@ -1,6 +1,6 @@
 import random
 
-from pfgame.forms import InvestForm, DivestForm
+from pfgame.forms import InvestForm, DivestForm, CCPaymentForm
 
 from django.views.generic.base import View
 from django.views.generic.edit import FormView
@@ -47,6 +47,9 @@ class IndexView(LoginRequiredMixin, View):
                 accounts.cc_overdue_balance * interest_multiplier
             )
 
+        if accounts.cc_overdue_balance:
+            tip += "Your credit card is past due. Quickly paying a credit account helps avoid interest charges and the deactivation of your card.<br/>"
+
         if accounts.wage and accounts.week_number % 2 == 0:  # Fortnightly
             accounts.bank_balance += accounts.wage
             tip += f'Payday! ${accounts.wage} has been deposited into your bank. <a href="https://i.imgur.com/lSoUQr2.png">Spend it wisely!</a><br/>'
@@ -62,8 +65,8 @@ class InvestView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
-        if form.cleaned_data['amount'] < 0:
-            form.cleaned_data['amount'] = 0
+        if form.cleaned_data["amount"] < 0:
+            form.cleaned_data["amount"] = 0
         elif form.cleaned_data["amount"] > self.request.user.accounts.bank_balance:
             form.cleaned_data["amount"] = self.request.user.accounts.bank_balance
         self.request.user.accounts.bank_balance -= form.cleaned_data["amount"]
@@ -78,11 +81,37 @@ class DivestView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
-        if form.cleaned_data['amount'] < 0:
-            form.cleaned_data['amount'] = 0
-        elif form.cleaned_data["amount"] > self.request.user.accounts.investment_balance:
+        if form.cleaned_data["amount"] < 0:
+            form.cleaned_data["amount"] = 0
+        elif (
+            form.cleaned_data["amount"] > self.request.user.accounts.investment_balance
+        ):
             form.cleaned_data["amount"] = self.request.user.accounts.investment_balance
         self.request.user.accounts.investment_balance -= form.cleaned_data["amount"]
         self.request.user.accounts.bank_balance += form.cleaned_data["amount"]
+        self.request.user.accounts.save()
+        return super().form_valid(form)
+
+
+class CCPaymentView(FormView):
+    template_name = "cc_payment.html"
+    form_class = CCPaymentForm
+    success_url = "/"
+
+    def form_valid(self, form):
+        if form.cleaned_data["amount"] < 0:
+            form.cleaned_data["amount"] = 0
+        elif form.cleaned_data["amount"] > self.request.user.accounts.bank_balance:
+            form.cleaned_data["amount"] = self.request.user.accounts.bank_balance
+        elif form.cleaned_data["amount"] > self.request.user.accounts.cc_balance:
+            form.cleaned_data["amount"] = self.request.user.accounts.cc_balance
+        self.request.user.accounts.cc_overdue_balance -= form.cleaned_data["amount"]
+        self.request.user.accounts.bank_balance -= form.cleaned_data["amount"]
+        if self.request.user.accounts.cc_overdue_balance < 0:
+            # Functionally equivalent to subtraction since value is negative
+            self.request.user.accounts.cc_current_month += (
+                self.request.user.accounts.cc_overdue_balance
+            )
+            self.request.user.accounts.cc_overdue_balance = 0
         self.request.user.accounts.save()
         return super().form_valid(form)
