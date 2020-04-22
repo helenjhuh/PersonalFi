@@ -26,7 +26,7 @@
 </ul>
 <!--Shop-->
 {%if accounts.bank_balance > 0%}
-  {%if items%}<ul class="d-block p-2 list-group"> <h3>Shop</h3>{%endif%}
+  {%if items%}<h3>Shop</h3><ul class="d-block p-2 list-group">{%endif%}
     {%for item in items%}
     <li><a href="{%url 'buy' item.pk%}" class="list-group-item list-group-item-action" data-toggle="list">{{item}} <span class="badge badge-primary badge-pill">${{item.price}}</span></a></li>
     {%empty%}
