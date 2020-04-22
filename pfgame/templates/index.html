@@ -2,26 +2,29 @@
 
 {%block title%}Overview{%endblock%}
 {%block content%}
+<!--Titel & Week Number-->
 <nav class="navbar navbar-light" style="background-color: #caffc9;">
   <span class="navbar-brand mb-0 h1">PersonalFi</span> <b>Week: {{accounts.week_number}}</b>
 </nav>
-<!--<h1><span style="color:green">PersonalFi</span>: week {{accounts.week_number}}</h1>-->
+<!--Alerts-->
 {% if tip %}
 <div class="alert alert-primary" role="alert">
   {{tip|safe}}
 </div>
-<!--<strong>{{tip|safe}}</strong>-->
 {%endif%}
+<!--Overview-->
 <ul class="d-block p-2 list-group list-group-flush"> <h3>Overview</h3>
   <li class="list-group-item">Bank balance: ${{accounts.bank_balance}}</li>
   <li class="list-group-item">Investments: ${{accounts.investment_balance}}
-    <button type="button" class="d-inline p-2 btn btn-success" href="{%url 'invest'%}">Invest</button>{%if accounts.investment_balance%}
-    <button type="button" class="d-inline p-2 btn btn-danger" href="{%url 'divest'%}">Divest</button>{%endif%}
+    <a class="d-inline p-2 btn btn-outline-success" href="{%url 'invest'%}" role="button">Invest</a>
+    {%if accounts.investment_balance%}
+      <a class="d-inline p-2 btn btn-outline-danger" href="{%url 'divest'%}" role="button">Divest</a>
+    {%endif%}
   </li>
   <li class="list-group-item">Credit card balance: ${{accounts.cc_balance}} {%if accounts.cc_balance%}(<a href="{%url 'CCPayment'%}">make payment</a>){%endif%}</li>
   <li class="list-group-item">Wage: ${{accounts.wage}} (paid fortnightly)</li>
 </ul>
-
+<!--Shop-->
 {%if accounts.bank_balance > 0%}
   {%if items%}<ul class="d-block p-2 list-group"> <h3>Shop</h3>{%endif%}
     {%for item in items%}
@@ -32,6 +35,6 @@
     {%endfor%}
   {%if items%}</ul>{%endif%}
   {%endif%}
-
-<button href="{%url 'index'%}" type="button" class="btn btn-dark">Do nothing this week</button>
+<!--Do nothing-->
+<a class="btn btn-dark" href="{%url 'index'%}" role="button">Do nothing this week</a>
 {%endblock%}
