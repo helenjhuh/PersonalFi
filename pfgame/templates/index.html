@@ -21,7 +21,7 @@
       <a class="d-inline p-2 btn btn-outline-danger" href="{%url 'divest'%}" role="button">Divest</a>
     {%endif%}
   </li>
-  <li class="list-group-item">Credit card balance: ${{accounts.cc_balance}} {%if accounts.cc_balance%}(<a href="{%url 'CCPayment'%}">make payment</a>){%endif%}</li>
+  <li class="list-group-item">Credit card balance: ${{accounts.cc_balance}} {%if accounts.cc_balance%}<a class="d-inline p-2 btn btn-outline-info" href="{%url 'CCPayment'%}" role="button">Make Payment</a>{%endif%}</li>
   <li class="list-group-item">Wage: ${{accounts.wage}} (paid fortnightly)</li>
 </ul>
 <!--Shop-->
