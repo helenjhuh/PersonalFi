@@ -13,8 +13,9 @@
 </div>
 {%endif%}
 <!--Overview-->
+<div class="d-block p-2 list-group list-group-flush">
+<ul>
 <h3>Overview</h3>
-<ul class="d-block p-2 list-group list-group-flush">
   <li class="list-group-item">Bank balance: ${{accounts.bank_balance}}</li>
   <li class="list-group-item">Investments: ${{accounts.investment_balance}}
     <a class="d-inline p-2 btn btn-outline-success" href="{%url 'invest'%}" role="button">Invest</a>
@@ -25,6 +26,7 @@
   <li class="list-group-item">Credit card balance: ${{accounts.cc_balance}} {%if accounts.cc_balance%}(<a href="{%url 'CCPayment'%}">make payment</a>){%endif%}</li>
   <li class="list-group-item">Wage: ${{accounts.wage}} (paid fortnightly)</li>
 </ul>
+</div>
 <!--Shop-->
 {%if accounts.bank_balance > 0%}
   {%if items%}<h3>Shop</h3><ul class="d-block p-2 list-group">{%endif%}
