@@ -2,7 +2,7 @@
 
 {%block title%}Overview{%endblock%}
 {%block content%}
-<!--Titel & Week Number-->
+<!--Title & Week Number-->
 <nav class="navbar navbar-light" style="background-color: #caffc9;">
   <span class="navbar-brand mb-0 h1">PersonalFi</span> <b>Week: {{accounts.week_number}}</b>
 </nav>
@@ -28,8 +28,7 @@
 {%if accounts.bank_balance > 0%}
   {%if items%}<ul class="d-block p-2 list-group"> <h3>Shop</h3>{%endif%}
     {%for item in items%}
-    <li class="list-group-item list-group-item-action" data-toggle="list"><a href="{%url 'buy' item.pk%}">{{item}}</a>
-      <span class="badge badge-primary badge-pill">${{item.price}}</span></li>
+    <li><a href="{%url 'buy' item.pk%}" class="list-group-item list-group-item-action" data-toggle="list">{{item}} <span class="badge badge-primary badge-pill">${{item.price}}</span></a></li>
     {%empty%}
     No items for sale! Add items to the database via the admin site.
     {%endfor%}
