@@ -13,7 +13,8 @@
 </div>
 {%endif%}
 <!--Overview-->
-<ul class="d-block p-2 list-group list-group-flush"> <h3>Overview</h3>
+<h3>Overview</h3>
+<ul class="d-block p-2 list-group list-group-flush">
   <li class="list-group-item">Bank balance: ${{accounts.bank_balance}}</li>
   <li class="list-group-item">Investments: ${{accounts.investment_balance}}
     <a class="d-inline p-2 btn btn-outline-success" href="{%url 'invest'%}" role="button">Invest</a>
