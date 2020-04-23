@@ -2,25 +2,38 @@
 
 {%block title%}Overview{%endblock%}
 {%block content%}
-<h1><span style="color:green">PersonalFi</span>: week {{accounts.week_number}}</h1>
+<!--Title & Week Number-->
+<nav class="navbar navbar-light" style="background-color: #caffc9;">
+  <span class="navbar-brand mb-0 h1">PersonalFi</span> <b>Week: {{accounts.week_number}}</b>
+</nav>
+<!--Alerts-->
 {% if tip %}
-<strong>{{tip|safe}}</strong>
+<div class="alert alert-primary" role="alert">
+  {{tip|safe}}
+</div>
 {%endif%}
-<ul>
-<li>Bank balance: ${{accounts.bank_balance}}</li>
-<li>Investments: ${{accounts.investment_balance}} (<a href="{%url 'invest'%}">invest</a>{%if accounts.investment_balance%}, <a href="{%url 'divest'%}">divest</a>{%endif%})</li>
-<li>Credit card balance: ${{accounts.cc_balance}} {%if accounts.cc_balance%}(<a href="{%url 'CCPayment'%}">make payment</a>){%endif%}</li>
-<li>Wage: ${{accounts.wage}} (paid fortnightly)</li>
+<!--Overview-->
+<ul class="d-block p-2 list-group list-group-flush"> <h3>Overview</h3>
+  <li class="list-group-item">Bank balance: ${{accounts.bank_balance}}</li>
+  <li class="list-group-item">Investments: ${{accounts.investment_balance}}
+    <a class="d-inline p-2 btn btn-outline-success" href="{%url 'invest'%}" role="button">Invest</a>
+    {%if accounts.investment_balance%}
+      <a class="d-inline p-2 btn btn-outline-danger" href="{%url 'divest'%}" role="button">Divest</a>
+    {%endif%}
+  </li>
+  <li class="list-group-item">Credit card balance: ${{accounts.cc_balance}} {%if accounts.cc_balance%}<a class="d-inline p-2 btn btn-outline-info" href="{%url 'CCPayment'%}" role="button">Make Payment</a>{%endif%}</li>
+  <li class="list-group-item">Wage: ${{accounts.wage}} (paid fortnightly)</li>
 </ul>
+<!--Shop-->
 {%if accounts.bank_balance > 0%}
-<h2>Shop</h2>
-{%if items%}<ul>{%endif%}
-  {%for item in items%}
-  <li><a href="{%url 'buy' item.pk%}">{{item}} (${{item.price}})</a></li>
-  {%empty%}
-  No items for sale! Add items to the database via the admin site.
-  {%endfor%}
-{%if items%}</ul>{%endif%}
-{%endif%}
-<a href="{%url 'index'%}" class="btn" role="button">Do nothing this week</a>
+  {%if items%}<ul class="d-block p-2 list-group"> <h3>Shop</h3>{%endif%}
+    {%for item in items%}
+    <li><a href="{%url 'buy' item.pk%}" class="list-group-item list-group-item-action" data-toggle="list">{{item}} <span class="badge badge-primary badge-pill">${{item.price}}</span></a></li>
+    {%empty%}
+    No items for sale! Add items to the database via the admin site.
+    {%endfor%}
+  {%if items%}</ul>{%endif%}
+  {%endif%}
+<!--Do nothing-->
+<a class="btn btn-dark" href="{%url 'index'%}" role="button">Do nothing this week</a>
 {%endblock%}
