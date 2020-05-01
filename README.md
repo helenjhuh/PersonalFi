@@ -2,6 +2,7 @@
 PersonalFi is a web game to teach the basics of personal finance, with an emphasis on budgeting and credit.
 
 #### Running PersonalFi
+
 * Install Django: `pip3 install django`
 * Build the database: from the root of the repo, `python3 manage.py migrate`
 * Create an admin user: `python3 manage.py createsuperuser`
